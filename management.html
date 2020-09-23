@@ -1,0 +1,122 @@
+<HTML>
+<HEAD>
+<TITLE>
+Sanx's Computer Management Interface
+</TITLE>
+
+<SCRIPT SRC="common.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="listspace_web.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="ps.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="restart.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="processor.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="exec.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="service.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="share.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="diskpartition.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="listprinters.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="logmeminfo.vbs" LANGUAGE="VBScript"></SCRIPT>
+<SCRIPT SRC="drives.vbs" LANGUAGE="VBScript"></SCRIPT>
+
+<STYLE>
+BODY {
+	font-family: tahoma;
+	font-size: 10pt;
+}
+
+TD {
+	font-family: tahoma;
+	font-size: 10pt;
+}
+
+H1 {
+	font-size: 16pt;
+	font-weight: bold;
+}
+
+H2 {
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+INPUT {
+	border-style : solid;
+	border-width : 1px;
+	border-color : Black;
+	font-size : 10pt;
+	font-family : Tahoma;
+	background-color : #FFFFd0;
+}
+
+INPUT.button {
+	border-width : 0px;
+	font-size : 8pt;
+	font-family : Tahoma;
+	background-color : #ADD8E6;
+	cursor = hand;
+}
+</STYLE>
+
+</HEAD>
+
+<BODY>
+<H1>Sanx's Computer Management Interface</H1>
+<FORM>
+Enter server name:<BR>
+<INPUT TYPE="text" NAME="0" ID="0" SIZE="30"><P>
+<TABLE CELLPADDING="0" CELLSPACING="0">
+<TR>
+	<TD>Enter executable to run:<BR>
+	<INPUT TYPE="text" NAME="1" ID="1" SIZE="30">&nbsp;
+	</TD>
+	<TD>Enter process ID to kill:<BR>
+	<INPUT TYPE="text" NAME="2" ID="2" SIZE="30">&nbsp;
+	</TD>
+	<TD>Enter service name:<BR>
+	<INPUT TYPE="text" NAME="3" ID="3" SIZE="30">&nbsp;
+	</TD>
+</TR>
+<TR>
+	<TD>Enter share name:<BR>
+	<INPUT TYPE="text" NAME="4" ID="4" SIZE="30">&nbsp;
+	</TD>
+	<TD>Enter share path:<BR>
+	<INPUT TYPE="text" NAME="5" ID="5" SIZE="30">&nbsp;
+	</TD>
+	<TD>&nbsp;</TD>
+</TR>
+</TABLE><P>
+<INPUT CLASS="button" TYPE="submit" VALUE="Disk Free Space" onClick="ListFreeSpace(me.form.elements(0).value)">
+<INPUT CLASS="button" TYPE="submit" VALUE="Process Listing" onClick="ListJobs(me.form.elements(0).value)">
+<INPUT CLASS="button" TYPE="submit" VALUE="Reboot Machine" onClick="Reboot(me.form.elements(0).value)">
+<INPUT CLASS="button" TYPE="submit" VALUE="Shut Down Machine" onClick="PowerOff(me.form.elements(0).value)">
+<INPUT CLASS="button" TYPE="submit" VALUE="Log Off Current User" onClick="LogOff(me.form.elements(0).value)">
+<INPUT CLASS="button" TYPE="submit" VALUE="Processor Information" onClick="GetProcInfo(me.form.elements(0).value)">
+<INPUT CLASS="button" TYPE="submit" VALUE="Remotely Execute Process" onClick="ExecuteCmd me.form.elements(0).value, me.form.elements(1).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="Kill Process" onClick="Kill me.form.elements(0).value, me.form.elements(2).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="List Services" onClick="Service 'LIST',,,,,me.form.elements(0).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="Show Dependents" onClick="Service 'DEPENDS',me.form.elements(3).value,,,,me.form.elements(0).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="Start Service" onClick="Service 'START',me.form.elements(3).value,,,,me.form.elements(0).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="Stop Service" onClick="Service 'STOP',me.form.elements(3).value,,,,me.form.elements(0).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="Disable Service" onClick="Service 'MODE',me.form.elements(3).value,,,'disabled',me.form.elements(0).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="Enable Service (Manual)" onClick="Service 'MODE',me.form.elements(3).value,,,'manual',me.form.elements(0).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="Enable Service (Automatic)" onClick="Service 'MODE',me.form.elements(3).value,,,'automatic',me.form.elements(0).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="List Shares" onClick="share me.form.elements(0).value,,,,,'LIST'">
+<INPUT CLASS="button" TYPE="submit" VALUE="Create Share" onClick="share me.form.elements(0).value,me.form.elements(4).value,me.form.elements(5).value,,,'CREATE'">
+<INPUT CLASS="button" TYPE="submit" VALUE="Delete Share" onClick="share me.form.elements(0).value,me.form.elements(4).value,,,,'DELETE'">
+<INPUT CLASS="button" TYPE="submit" VALUE="Show Drives Info" onClick="Drives me.form.elements(0).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="Show Partition Info" onClick="GetDskPartInf me.form.elements(0).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="Disk Free Space" onClick="ListFreeSpace(me.form.elements(0).value)">
+<INPUT CLASS="button" TYPE="submit" VALUE="List Printers" onClick="ListPrinters me.form.elements(0).value">
+<INPUT CLASS="button" TYPE="submit" VALUE="Logical Memory Configuration" onClick="LogMemInfo me.form.elements(0).value">
+</FORM>
+Once you click any of the buttons, your machine may appear to freeze for up to ten seconds or so. This is pefectly normal and should be expected.
+<P>
+<H2>Why isn't it working?</H2>
+For this system to work, the following conditions have to be met:<BR>
+<UL>
+	<LI>The client and target machines have to be running Windows 2000 or above.
+	<LI>You must have admin rights on both the client and target machines.
+	<LI>You must have the <EM>Initialize and script ActiveX controls not marked as safe</EM> option in Internet Explorer enabled.
+</UL>
+</BODY>
+</HTML>
